@@ -34,7 +34,7 @@ router.post('/analyze-matchup', authenticate, async (req, res) => {
     // LangChain IBM Requirement Implementation
     const model = new ChatGroq({
       apiKey: GROQ_API_KEY,
-      modelName: "mixtral-8x7b-32768",
+      model: "mixtral-8x7b-32768",
     });
 
     const promptTemplate = PromptTemplate.fromTemplate(
@@ -60,6 +60,80 @@ Do not return any text outside of the JSON block. Do not use markdown blocks, ju
   } catch (error) {
     console.error('LangChain Groq API Error:', error);
     res.status(500).json({ error: 'Failed to generate AI analysis' });
+  }
+});
+
+router.post('/live-insight', authenticate, async (req, res) => {
+  const { matchData } = req.body;
+  if (!matchData) {
+    return res.status(400).json({ error: 'Missing matchData' });
+  }
+
+  try {
+    const model = new ChatGroq({
+      apiKey: GROQ_API_KEY,
+      model: "mixtral-8x7b-32768",
+    });
+
+    const promptTemplate = PromptTemplate.fromTemplate(
+      `You are an elite soccer tactician watching a live match. The current match is {homeTeam} vs {awayTeam}. 
+The score is {homeScore} - {awayScore}. 
+Here are the recent events: {events}
+
+Provide a short, 2-sentence tactical insight on what is currently happening in the match and what to expect next. 
+Return the response as a simple JSON object with the key "insight". Do not return anything outside the JSON block.`
+    );
+
+    const parser = new StringOutputParser();
+    const chain = promptTemplate.pipe(model).pipe(parser);
+
+    const content = await chain.invoke({ 
+      homeTeam: matchData.homeTeam, 
+      awayTeam: matchData.awayTeam, 
+      homeScore: matchData.homeScore, 
+      awayScore: matchData.awayScore,
+      events: JSON.stringify(matchData.events)
+    });
+
+    const jsonMatch = content.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('Failed to parse JSON from Groq via LangChain');
+
+    const result = JSON.parse(jsonMatch[0]);
+    res.json({ insight: result.insight });
+
+  } catch (error) {
+    console.error('LangChain Groq API Error:', error);
+    res.status(500).json({ error: 'Failed to generate live insight' });
+  }
+});
+
+router.post('/chat', authenticate, async (req, res) => {
+  const { message } = req.body;
+  if (!message) {
+    return res.status(400).json({ error: 'Missing message' });
+  }
+
+  try {
+    const model = new ChatGroq({
+      apiKey: GROQ_API_KEY,
+      model: "mixtral-8x7b-32768",
+    });
+
+    const promptTemplate = PromptTemplate.fromTemplate(
+      `You are an AI Soccer Tactician and Analyst. A user is asking you a question about soccer rules, tactics, players, or matches.
+Provide a clear, engaging, and expert answer. Keep it concise but highly informative.
+User question: {question}`
+    );
+
+    const parser = new StringOutputParser();
+    const chain = promptTemplate.pipe(model).pipe(parser);
+
+    const reply = await chain.invoke({ question: message });
+    res.json({ reply });
+
+  } catch (error) {
+    console.error('LangChain Chat Error:', error);
+    res.status(500).json({ error: 'Failed to generate chat response' });
   }
 });
 

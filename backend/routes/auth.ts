@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
 
 const router = Router();
-const prisma = new PrismaClient({ log: ['error'] });
+const prisma = new PrismaClient();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-jwt-key-for-development';
 
