@@ -1,0 +1,328 @@
+/* LiveMatchDetail.css */
+
+.live-detail-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: radial-gradient(circle at center, #2e3a45 0%, #0d1217 100%);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.back-btn {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: #94a3b8;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  z-index: 10;
+}
+
+.back-btn:hover {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+}
+
+/* Scoreboard */
+.scoreboard-section {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-top: 1rem;
+}
+
+.score-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto 1rem;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  letter-spacing: 2px;
+}
+
+.timer {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.score-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 700px;
+  margin: 0 auto;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 2rem;
+}
+
+.team-name {
+  flex: 1;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.team-name.home {
+  text-align: left;
+}
+
+.team-name.away {
+  text-align: right;
+}
+
+.score-numbers {
+  display: flex;
+  gap: 2rem;
+  font-size: 4.5rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* Stats Toolbar */
+.stats-toolbar {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.7;
+}
+
+.stat-item .icon {
+  font-size: 1.5rem;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-item .lbl {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  color: #94a3b8;
+}
+
+.yellow-card {
+  width: 16px;
+  height: 22px;
+  background: #fbbf24;
+  border-radius: 2px;
+  transform: rotate(-15deg);
+}
+
+.red-card {
+  width: 16px;
+  height: 22px;
+  background: #ef4444;
+  border-radius: 2px;
+  transform: rotate(15deg);
+}
+
+/* 3D Pitch */
+.detail-pitch-wrapper {
+  display: flex;
+  justify-content: center;
+  perspective: 1200px;
+  margin-bottom: 4rem;
+}
+
+.detail-pitch-3d {
+  width: 800px;
+  height: 450px;
+  transform: rotateX(60deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.9);
+  position: relative;
+}
+
+/* Pitch Base Texture */
+.detail-pitch-surface {
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    #53a817,
+    #53a817 10%,
+    #5cb919 10%,
+    #5cb919 20%
+  );
+  position: relative;
+  border: 4px solid rgba(255,255,255,0.8);
+}
+
+/* 3D Grass Base (Extrusion) */
+.detail-pitch-surface::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: -4px;
+  right: -4px;
+  height: 20px;
+  background: #3e2723; /* dirt color */
+  transform-origin: top;
+  transform: rotateX(-90deg);
+}
+
+.detail-pitch-lines {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border: 2px solid rgba(255,255,255,0.5);
+  pointer-events: none;
+}
+.detail-pitch-lines::before { /* center circle */
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px; height: 150px;
+  border: 2px solid rgba(255,255,255,0.5);
+  border-radius: 50%;
+}
+.detail-pitch-lines::after { /* center line */
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 2px;
+  background: rgba(255,255,255,0.5);
+}
+
+/* SVG Pass Lines Overlay */
+.pass-lines-svg {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Players on Pitch */
+.detail-player {
+  position: absolute;
+  transform: translate(-50%, -50%) rotateX(-60deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 20;
+}
+
+.player-badge {
+  background: #fff;
+  color: #000;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.player-badge.black {
+  background: #111;
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+.player-silhouette {
+  width: 24px;
+  height: 36px;
+  /* Instead of a complex silhouette, we'll use a stylized dot for now or an emoji/icon to keep it clean */
+  background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C9.8 2 8 3.8 8 6C8 8.2 9.8 10 12 10C14.2 10 16 8.2 16 6C16 3.8 14.2 2 12 2ZM8 12C5.8 12 4 13.8 4 16V22H8V34H16V22H20V16C20 13.8 18.2 12 16 12H8Z" fill="%23ffffff"/></svg>') no-repeat center;
+  background-size: contain;
+  filter: drop-shadow(5px 15px 5px rgba(0,0,0,0.6));
+}
+
+.player-silhouette.black {
+  background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C9.8 2 8 3.8 8 6C8 8.2 9.8 10 12 10C14.2 10 16 8.2 16 6C16 3.8 14.2 2 12 2ZM8 12C5.8 12 4 13.8 4 16V22H8V34H16V22H20V16C20 13.8 18.2 12 16 12H8Z" fill="%23111111"/></svg>') no-repeat center;
+}
+
+/* Timeline */
+.timeline-section {
+  position: relative;
+  padding: 2rem 0;
+}
+
+.timeline-axis {
+  position: relative;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  margin-bottom: 2rem;
+}
+
+.timeline-active-bar {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  background: rgba(255,255,255,0.3);
+}
+
+.timeline-active-indicator {
+  position: absolute;
+  top: -4px;
+  width: 2px;
+  height: 10px;
+  background: #ef4444;
+}
+
+.timeline-tick {
+  position: absolute;
+  top: -20px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.tick-label {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.tick-mark {
+  width: 1px;
+  height: 15px;
+  background: rgba(255,255,255,0.4);
+}
+
+.timeline-events {
+  position: relative;
+  height: 40px;
+}
+
+.timeline-event {
+  position: absolute;
+  transform: translateX(-50%);
+  top: 0;
+  font-size: 1.5rem;
+}
+
+.event-red-cards {
+  width: 20px;
+  height: 28px;
+  background: #ef4444;
+  border-radius: 3px;
+  transform: rotate(-10deg);
+  box-shadow: 2px 2px 0 #b91c1c;
+}
